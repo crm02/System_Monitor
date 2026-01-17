@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>System Monitor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1e1e1e;
+            color: white;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .container{
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 600px));
+                gap: 40px;
+                justify-content: center;
+                align-items: start;
+        }
+        .left-col{
+          
+            width: 100%;
+        }
+        .right-col{
+          
+            width: 100%;
+        }
+        .box {
+            background: #2a2a2a;
+            padding: 20px;
+            margin-bottom: 30px;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 8px;
+        }
+
+        .current-valuer {
+            font-size: 2em;
+            font-weight: bold;
+            color: #4ade80;
+        }
+        .current-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #4a92de;
+        }
+        .current-valued {
+            font-size: 2em;
+            font-weight: bold;
+            color: #f59e0b;
+        }
+        .upload {
+            font-size: 2em;
+            font-weight: bold;
+            color: #a000ff;
+        }
+        .down {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ff0061;
+        }
+        
+    </style>
+</head>
+<body>
+    
+    <pre>                                                                                                                                      
+                                                                                                                                                      
+                                                                                     ____                                                             
+  .──.──.                          ___                       ____                  ,'  , `.                                 ___                       
+ ╱  ╱    '.                      ,──.'│_                   ,'  , `.             ,─┼─,.' _ │                        ,──,   ,──.'│_                     
+│  :  ╱`. ╱                      │  │ :,'               ,─┼─,.' _ │          ,─┼─. ;   , ││   ,───.        ,───, ,──.'│   │  │ :,'   ,───.    __  ,─. 
+;  │  │──`             .──.──.   :  : ' :            ,─┼─. ;   , ││         ,──.'│'   │  ;│  '   ,'╲   ,─┼─. ╱  ││  │,    :  : ' :  '   ,'╲ ,' ,'╱ ╱│ 
+│  :  ;_         .──, ╱  ╱    '.;__,'  ╱     ,───.  ,──.'│'   │  ││        │   │  ,', │  ': ╱   ╱   │ ,──.'│'   │`──'_  .;__,'  ╱  ╱   ╱   │'  │ │' │ 
+ ╲  ╲    `.    ╱_ .╱││  :  ╱`.╱│  │   │     ╱     ╲│   │  ,', │  │,        │   │ ╱  │ │  ││.   ; ,. :│   │  ,"' │,' ,'│ │  │   │  .   ; ,. :│  │   ,' 
+  `────.   ╲, ' , ' :│  :  ;_  :__,'│ :    ╱    ╱  │   │ ╱  │ │──'         '   │ :  │ :  │,'   │ │: :│   │ ╱  │ │'  │ │ :__,'│ :  '   │ │: :'  :  ╱   
+  __ ╲  ╲  ╱___╱ ╲: │ ╲  ╲    `. '  : │__ .    ' ╱ │   : │  │ ,            ;   . │  ; │──' '   │ .; :│   │ │  │ ││  │ :   '  : │__'   │ .; :│  │ '    
+ ╱  ╱`──'  ╱.  ╲  ' │  `────.   ╲│  │ '.'│'   ;   ╱│   : │  │╱             │   : │  │ ,    │   :    ││   │ │  │╱ '  : │__ │  │ '.'│   :    │;  : │    
+'──'.     ╱  ╲  ;   : ╱  ╱`──'  ╱;  :    ;'   │  ╱ │   │ │`─'              │   : '  │╱      ╲   ╲  ╱ │   │ │──'  │  │ '.'│;  :    ;╲   ╲  ╱ │  , ;    
+  `──'───'    ╲  ╲  ;'──'.     ╱ │  ,   ╱ │   :    │   ;╱                  ;   │ │`─'        `────'  │   │╱      ;  :    ;│  ,   ╱  `────'   ───'     
+               :  ╲  ╲ `──'───'   ───`─'   ╲   ╲  ╱'───'                   │   ;╱                    '───'       │  ,   ╱  ───`─'                     
+                ╲  ' ;                      `────'                         '───'                                  ───`─'                              
+                 `──`                                                                                                                                 </pre>
+    
+    <div class = "container">
+    <div class = "left-col">
+
+    <div class="box">
+        <h2>CPU Usage</h2>
+        <p class="current-value" id="cpu-value">0%</p>
+        <canvas id="cpuChart"></canvas>
+        
+    </div>
+
+    <div class="box">
+        <h2>RAM Usage</h2>
+        <p class="current-valuer" id="ram-value">0%</p>
+        <canvas id="ramChart"></canvas>
+        </div>
+        </div>
+
+    <div class="right-col">
+    <div class="box">
+        <h2>Disk Usage</h2>
+        <p class="current-valued" id="disk-value">0%</p>
+            <canvas id="diskChart"></canvas>
+        </div>
+    <div class="box">
+        <h2>Network Usage</h2>
+            <p>
+        <span class="down" id="net-down"> ↓ 0 KB/s</span> |
+        <span class="upload" id="net-up"> ↑ 0 KB/s</span>
+        </p>
+    <canvas id="netChart"></canvas>
+    </div>
+        </div>
+    </div>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        
+        const maxDataPoints = 10; 
+        const updateInterval = 1000; 
+
+        
+        const cpuData = [];
+        const ramData = [];
+        const diskData = [];
+        const netUpData = [];
+        const netDownData = [];
+        const labels = [];
+
+        // Create the CPU Chart
+        const cpuCtx = document.getElementById('cpuChart').getContext('2d');
+        const cpuChart = new Chart(cpuCtx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'CPU Usage (%)',
+                    data: cpuData,
+                    fill: false,
+                    borderColor: 'rgb(59, 130, 246)',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.4,
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { color: 'white' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    },
+                    x: {
+                        ticks: { color: 'white' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: { color: 'white' }
+                    }
+                }
+            }
+        });
+
+        // Create RAM Chart
+        const ramCtx = document.getElementById('ramChart').getContext('2d');
+        const ramChart = new Chart(ramCtx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'RAM Usage (%)',
+                    data: ramData,
+                    fill: false,
+                    borderColor: 'rgb(34, 197, 94)',
+                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                    tension: 0.4,
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { color: 'white' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    },
+                    x: {
+                        ticks: { color: 'white' },
+                        grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: { color: 'white' }
+                    }
+                }
+            }
+        });
+
+// Create Disk Chart
+const diskCtx = document.getElementById('diskChart').getContext('2d');
+const diskChart = new Chart(diskCtx, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Disk Usage (%)',
+            data: diskData,
+            fill: false,
+            borderColor: 'rgb(234, 179, 8)', 
+            backgroundColor: 'rgba(234, 179, 8, 0.1)',
+            tension: 0.4,
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 100,
+                ticks: { color: 'white' },
+                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+            },
+            x: {
+                ticks: { color: 'white' },
+                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+            }
+        },
+        plugins: {
+            legend: {
+                labels: { color: 'white' }
+            }
+        }
+    }
+});
+const netCtx = document.getElementById('netChart').getContext('2d');
+const netChart = new Chart(netCtx, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Download (KB/s)',
+                data: netDownData,
+                fill:false,
+                borderColor: 'rgb(255, 0, 97)',
+                backgroundColor: 'rgba(255, 0, 97, 0.1)',
+                tension: 0.4,
+                borderWidth: 2
+            },
+            {
+                label: 'Upload (KB/s)',
+                data: netUpData,
+                fill:false,
+                borderColor: 'rgb(160, 0, 255)',
+                backgroundColor: 'rgba(160, 0, 255, 0.1)',
+                tension: 0.4,
+                borderWidth: 2
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                //max: 100, // Commented out to allow dynamic scaling
+                ticks: { color: 'white' },
+                grid: { color: 'rgba(255,255,255,0.1)' }
+            },
+            x: {
+                ticks: { color: 'white' },
+                grid: { color: 'rgba(255,255,255,0.1)' }
+            }
+        },
+        plugins: {
+            legend: {
+                labels: { color: 'white' }
+            }
+        }
+    }
+});
+
+
+
+        // Function to fetch and update metrics
+        async function updateMetrics() {
+            try {
+                const response = await fetch('/api/metrics');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                console.log('Received data:', data); 
+                
+                // Update current value displays
+                document.getElementById('cpu-value').textContent = data.cpu.toFixed(1) + '%';
+                document.getElementById('ram-value').textContent = data.ram.toFixed(1) + '%';
+
+                document.getElementById('disk-value').textContent = data.disk.toFixed(1) + '%';
+                document.getElementById('net-up').textContent = `↑ ${data.net_up.toFixed(1)} KB/s`;
+                document.getElementById('net-down').textContent = `↓ ${data.net_down.toFixed(1)} KB/s`;
+                            
+
+                // add new data points
+                const now = new Date();
+                const timeLabel = now.getHours() + ':' + 
+                                 String(now.getMinutes()).padStart(2, '0') + ':' + 
+                                 String(now.getSeconds()).padStart(2, '0');
+                
+                // Remove old data if we have too many points
+                if (labels.length >= maxDataPoints) {
+                    labels.shift();
+                    cpuData.shift();
+                    ramData.shift();
+                    diskData.shift();
+                    netUpData.shift();
+                    netDownData.shift();
+
+                }
+                
+                // add new data
+                labels.push(timeLabel);
+                cpuData.push(data.cpu);
+                ramData.push(data.ram);
+                diskData.push(data.disk);
+                netUpData.push(data.net_up);
+                netDownData.push(data.net_down);
+
+                
+                console.log('Data points:', labels.length);
+                
+                // Update all charts
+                cpuChart.update('none'); // none disables animation for smoother updates
+                ramChart.update('none');
+                diskChart.update('none');
+                netChart.update('none');
+
+                
+            } catch (error) {
+                console.error('Error fetching metrics:', error);
+            }
+        }
+
+        //Start updating metrics
+        updateMetrics(); // Initial call
+        setInterval(updateMetrics, updateInterval); // repeat every second
+    </script>
+</body>
+</html>
